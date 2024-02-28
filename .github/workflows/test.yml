@@ -28,3 +28,13 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B install --file pom.xml
+
+    - name: Jacoco Report to PR
+      id: jacoco
+      uses: madrapps/jacoco-report@v1.6.1
+      with:
+        paths: |
+          ${{ github.workspace }}/**/build/reports/jacoco/**/prodNormalDebugCoverage.xml,
+          ${{ github.workspace }}/**/build/reports/jacoco/**/debugCoverage.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
+        min-coverage-overall: 20
