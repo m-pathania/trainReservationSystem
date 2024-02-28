@@ -39,7 +39,7 @@ jobs:
           paths: |
             ${{ github.workspace }}/**/target/site/jacoco/**/jacoco.xml
           token: ${{ secrets.PUBLISH_COMMENT }}
-          min-coverage-overall: 80
+          min-coverage-overall: ${{env.coverage-threshold}}
 
       - name: check coverage
         if: ${{ steps.jacoco.outputs.coverage-overall < env.coverage-threshold }}
