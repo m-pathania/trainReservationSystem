@@ -1,5 +1,5 @@
 package com.mayank.trainreservationsystem.enums;
 
 public enum BookingStatus {
-    BOOKED, CANCELLED
+    INITIATED, BOOKED, CANCELLED, FAILED
 }

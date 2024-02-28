@@ -27,4 +27,5 @@ public class Fields {
     public static final String SECTION_SEAT_COUNT = "section_seat_count";
     public static final String APPLICABLE_SECTIONS = "applicable_sections";
     public static final String NUMBER = "number";
+    public static final String BOOKING_ID = "booking_id";
 }

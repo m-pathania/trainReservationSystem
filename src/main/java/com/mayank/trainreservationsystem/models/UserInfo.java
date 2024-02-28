@@ -36,8 +36,4 @@ public class UserInfo {
 
     @Column(name = Fields.LASTNAME)
     private String lastName;
-
-    @OneToMany
-    @JoinColumn(name = Fields.USER_ID, referencedColumnName = Fields.ID)
-    private List<BookingInfo> bookingInfos;
 }

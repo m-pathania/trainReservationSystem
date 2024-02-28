@@ -3,17 +3,16 @@ package com.mayank.trainreservationsystem.repositories;
 import com.mayank.trainreservationsystem.enums.TrainSection;
 import com.mayank.trainreservationsystem.models.RouteSegment;
 import com.mayank.trainreservationsystem.models.SeatAllocation;
+import com.mayank.trainreservationsystem.repositories.impl.RouteSegmentRepository;
+import com.mayank.trainreservationsystem.repositories.impl.SeatAllocationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class SeatAllocationRepositoryTest {

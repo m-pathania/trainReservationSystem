@@ -44,4 +44,8 @@ public class SeatAllocation {
     @ManyToOne
     @JoinColumn(name = Fields.ROUTE_SEGMENT_ID)
     private RouteSegment routeSegment;
+
+    @ManyToOne
+    @JoinColumn(name = Fields.BOOKING_ID)
+    private BookingInfo bookingInfo;
 }

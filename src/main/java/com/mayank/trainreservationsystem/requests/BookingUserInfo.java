@@ -11,8 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookingUserInfo {
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
     @NotBlank
-    private String email;
+    private String emailId;
 }

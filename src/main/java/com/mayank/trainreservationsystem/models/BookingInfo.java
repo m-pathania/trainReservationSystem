@@ -36,16 +36,9 @@ public class BookingInfo {
     @Column(name = Fields.AMOUNT)
     private BigDecimal amount;
 
-    @Column(name = Fields.BOOKED_AT)
-    private Instant bookedAt;
-
     @Column(name = Fields.STATUS)
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
-
-    @ManyToOne
-    @JoinColumn(name = Fields.SEAT_ALLOCATION_ID)
-    private SeatAllocation seatAllocation;
 
     @ManyToOne
     @JoinColumn(name = Fields.USER_ID)

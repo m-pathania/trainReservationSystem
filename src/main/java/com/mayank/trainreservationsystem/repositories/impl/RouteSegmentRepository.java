@@ -1,4 +1,4 @@
-package com.mayank.trainreservationsystem.repositories;
+package com.mayank.trainreservationsystem.repositories.impl;
 
 import com.mayank.trainreservationsystem.models.RouteSegment;
 import jakarta.persistence.EntityManager;
