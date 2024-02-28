@@ -18,8 +18,7 @@ public class SeatAllocationRepository {
     private static final Class<SeatAllocation> KLASS = SeatAllocation.class;
     private final EntityManager entityManager;
 
-    private static final String FIND_BY_ROUTE_SEGMENT_IDS_QUERY =
-            "SELECT sa FROM SeatAllocation sa where sa.routeSegment.id in :route_segment_ids";
+    private static final String FIND_BY_ROUTE_SEGMENT_IDS_QUERY = "SELECT sa FROM SeatAllocation sa where sa.routeSegment.id in :route_segment_ids";
 
     @Transactional
     public void persistAll(List<SeatAllocation> seatAllocationList) {

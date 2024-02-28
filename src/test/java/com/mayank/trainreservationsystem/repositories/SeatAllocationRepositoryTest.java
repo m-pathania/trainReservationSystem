@@ -26,11 +26,8 @@ class SeatAllocationRepositoryTest {
         long routeSegmentId = 1;
         RouteSegment routeSegment = routeSegmentRepository.findById(routeSegmentId);
         Assertions.assertNotNull(routeSegment);
-        SeatAllocation seatAllocation = SeatAllocation.builder()
-                .number(1L)
-                .section(TrainSection.A)
-                .routeSegment(routeSegment)
-                .build();
+        SeatAllocation seatAllocation = SeatAllocation.builder().number(1L).section(TrainSection.A)
+                .routeSegment(routeSegment).build();
 
         seatAllocationRepository.persistAll(Collections.singletonList(seatAllocation));
 
@@ -40,17 +37,16 @@ class SeatAllocationRepositoryTest {
         Assertions.assertNotNull(routeSegment1.getTrain());
         Assertions.assertNotNull(routeSegment1.getStation());
 
-        List<SeatAllocation> seatAllocationList = seatAllocationRepository.findAllByRouteSegmentIds(Collections.singletonList(routeSegment1.getId()));
+        List<SeatAllocation> seatAllocationList = seatAllocationRepository
+                .findAllByRouteSegmentIds(Collections.singletonList(routeSegment1.getId()));
         Assertions.assertEquals(1, seatAllocationList.size());
         Assertions.assertEquals(seatAllocation, seatAllocationList.get(0));
 
-        SeatAllocation seatAllocation1 = SeatAllocation.builder()
-                .number(1L)
-                .section(TrainSection.A)
-                .routeSegment(routeSegment)
-                .build();
+        SeatAllocation seatAllocation1 = SeatAllocation.builder().number(1L).section(TrainSection.A)
+                .routeSegment(routeSegment).build();
 
-        Assertions.assertThrows(DataIntegrityViolationException.class, () -> seatAllocationRepository.persistAll(Collections.singletonList(seatAllocation1)));
+        Assertions.assertThrows(DataIntegrityViolationException.class,
+                () -> seatAllocationRepository.persistAll(Collections.singletonList(seatAllocation1)));
     }
 
 }

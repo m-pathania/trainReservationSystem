@@ -17,8 +17,7 @@ public class UserInfoRepository {
     private static final Class<UserInfo> KLASS = UserInfo.class;
     private final EntityManager entityManager;
 
-    private static final String FIND_BY_EMAIL_QUERY =
-            "SELECT ui FROM UserInfo ui WHERE ui.emailId = :email_id";
+    private static final String FIND_BY_EMAIL_QUERY = "SELECT ui FROM UserInfo ui WHERE ui.emailId = :email_id";
 
     @Transactional
     public UserInfo createOrFetchUser(BookingUserInfo bookingUserInfo) {
@@ -29,9 +28,7 @@ public class UserInfoRepository {
             return query.getSingleResult();
         } catch (NoResultException e) {
             var userInfoCreated = UserInfo.builder().lastName(bookingUserInfo.getLastName())
-                    .firstName(bookingUserInfo.getFirstName())
-                    .emailId(bookingUserInfo.getEmailId())
-                    .build();
+                    .firstName(bookingUserInfo.getFirstName()).emailId(bookingUserInfo.getEmailId()).build();
 
             entityManager.persist(userInfoCreated);
 

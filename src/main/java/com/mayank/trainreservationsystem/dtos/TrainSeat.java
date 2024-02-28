@@ -16,9 +16,6 @@ public class TrainSeat {
     private TrainSection section;
 
     public static TrainSeat fromSeatAllocation(SeatAllocation seatAllocation) {
-        return TrainSeat.builder()
-                .number(seatAllocation.getNumber())
-                .section(seatAllocation.getSection())
-                .build();
+        return TrainSeat.builder().number(seatAllocation.getNumber()).section(seatAllocation.getSection()).build();
     }
 }

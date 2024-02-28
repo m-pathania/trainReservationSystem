@@ -16,8 +16,7 @@ public class BookingInfoRepository {
     private final EntityManager entityManager;
     private final BaseBookingRepository baseBookingRepository;
 
-    private static final String UPDATE_BOOKING_STATUS =
-            "UPDATE BookingInfo bi SET bi.status = :status WHERE bi.id = :booking_id";
+    private static final String UPDATE_BOOKING_STATUS = "UPDATE BookingInfo bi SET bi.status = :status WHERE bi.id = :booking_id";
 
     @Transactional
     public BookingInfo save(BookingInfo bookingInfo) {

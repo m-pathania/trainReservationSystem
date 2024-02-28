@@ -82,11 +82,8 @@ public class TrainReservationServiceImpl implements TrainReservationService {
 
     private BookingInfo initiateBooking(TicketBookingRequest request) {
         UserInfo userInfo = userInfoRepository.createOrFetchUser(request.getUserInfo());
-        BookingInfo bookingInfo = BookingInfo.builder()
-                .amount(request.getPricePaid())
-                .status(BookingStatus.INITIATED)
-                .userInfo(userInfo)
-                .build();
+        BookingInfo bookingInfo = BookingInfo.builder().amount(request.getPricePaid()).status(BookingStatus.INITIATED)
+                .userInfo(userInfo).build();
 
         return bookingInfoRepository.save(bookingInfo);
     }
@@ -96,13 +93,12 @@ public class TrainReservationServiceImpl implements TrainReservationService {
         responseBuilder.errorMessage("No seats available.");
     }
 
-    private SeatBookingResult bookSeatForAllRouteSegments(TrainSeat availableSeat, List<RouteSegment> routeSegments, BookingInfo booking) {
+    private SeatBookingResult bookSeatForAllRouteSegments(TrainSeat availableSeat, List<RouteSegment> routeSegments,
+            BookingInfo booking) {
         try {
-            var seatAllocations = routeSegments.stream().map(routeSegment -> SeatAllocation.builder()
-                            .number(availableSeat.getNumber())
-                            .section(availableSeat.getSection())
-                            .routeSegment(routeSegment)
-                            .bookingInfo(booking)
+            var seatAllocations = routeSegments.stream()
+                    .map(routeSegment -> SeatAllocation.builder().number(availableSeat.getNumber())
+                            .section(availableSeat.getSection()).routeSegment(routeSegment).bookingInfo(booking)
                             .build())
                     .toList();
             seatAllocationRepository.persistAll(seatAllocations);

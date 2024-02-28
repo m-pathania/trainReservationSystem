@@ -23,10 +23,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = Entities.USER_INFO,
-        indexes = {
-                @Index(name = "email_id_index", columnList = "email_id", unique = true)
-        })
+@Table(name = Entities.USER_INFO, indexes = { @Index(name = "email_id_index", columnList = "email_id", unique = true) })
 public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

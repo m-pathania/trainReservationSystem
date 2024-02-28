@@ -51,8 +51,8 @@ public class Train {
         }
 
         return Arrays.stream(TrainSection.values())
-                .flatMap(section -> LongStream.range(0, sectionSeatCount).mapToObj(seatNumber -> TrainSeat.builder()
-                        .number(seatNumber).section(section).build()))
+                .flatMap(section -> LongStream.range(0, sectionSeatCount)
+                        .mapToObj(seatNumber -> TrainSeat.builder().number(seatNumber).section(section).build()))
                 .toList();
     }
 }

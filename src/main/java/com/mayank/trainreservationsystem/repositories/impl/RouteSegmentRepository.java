@@ -32,8 +32,7 @@ public class RouteSegmentRepository {
     public List<RouteSegment> getRouteSegments(long fromStation, long toStation, LocalDate dateToBook) {
         var query = entityManager.createQuery(FETCH_ROUTES_QUERY, KCLASS);
 
-        query.setParameter("from_station", fromStation)
-                .setParameter("to_station", toStation)
+        query.setParameter("from_station", fromStation).setParameter("to_station", toStation)
                 .setParameter("date_to_book", dateToBook);
 
         return Optional.ofNullable(query.getResultList()).orElseGet(ArrayList::new);
