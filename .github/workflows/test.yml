@@ -8,6 +8,9 @@
 
 name: Java CI with Maven
 
+env:
+  coverage-threshold: 60
+
 on:
   pull_request:
     types: [ opened, synchronize, reopened, edited ]
@@ -37,3 +40,10 @@ jobs:
             ${{ github.workspace }}/**/target/site/jacoco/**/jacoco.xml
           token: ${{ secrets.PUBLISH_COMMENT }}
           min-coverage-overall: 80
+
+      - name: check coverage
+        if: ${{ steps.jacoco.outputs.coverage-overall < env.coverage-threshold }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setFailed('Overall coverage is less than ${{env.coverage-threshold}}!')
