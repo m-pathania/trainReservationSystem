@@ -10,18 +10,21 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
-@Entity(name = Entities.ROUTE_SEGMENT)
+@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = Entities.ROUTE_SEGMENT)
 public class RouteSegment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +33,12 @@ public class RouteSegment {
     @Column(name = Fields.SEGMENT_ORDER)
     private Long segmentOrder;
 
+    @Column(name = Fields.DATE)
+    private LocalDate date;
+
+    @Column(name = Fields.ROUTE_ID)
+    private Long routeId;
+
     @ManyToOne
     @JoinColumn(name = Fields.TRAIN_ID)
     private Train train;
@@ -37,8 +46,4 @@ public class RouteSegment {
     @ManyToOne
     @JoinColumn(name = Fields.STATION_ID)
     private TrainStation station;
-
-    @OneToMany
-    @JoinColumn(name = Fields.ROUTE_SEGMENT_ID, referencedColumnName = Fields.ID)
-    private List<SeatAllocation> seatAllocations;
 }

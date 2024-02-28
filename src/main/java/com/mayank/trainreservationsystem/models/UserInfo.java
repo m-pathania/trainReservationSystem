@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,11 +17,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Entity(name = Entities.USER_INFO)
+@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = Entities.USER_INFO)
 public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
