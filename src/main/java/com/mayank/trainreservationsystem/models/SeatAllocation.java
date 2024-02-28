@@ -8,24 +8,25 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 import java.time.LocalDate;
+
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = Entities.TRAIN_SEAT)
+@Entity(name = Entities.SEAT_ALLOCATION)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrainSeat {
+public class SeatAllocation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = Fields.ROUTE_ID)
-    private Long routeId;
 
     @Column(name = Fields.NAME)
     private Long name;
@@ -38,4 +39,8 @@ public class TrainSeat {
 
     @Column(name = Fields.IS_BOOKED)
     private Boolean isBooked;
+
+    @ManyToOne
+    @JoinColumn(name = Fields.ROUTE_SEGMENT_ID)
+    private RouteSegment routeSegment;
 }

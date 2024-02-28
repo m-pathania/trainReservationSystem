@@ -7,10 +7,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity(name = Entities.USER_INFO)
 @Data
@@ -30,4 +34,8 @@ public class UserInfo {
 
     @Column(name = Fields.LASTNAME)
     private String lastName;
+
+    @OneToMany
+    @JoinColumn(name = Fields.USER_ID, referencedColumnName = Fields.ID)
+    private List<BookingInfo> bookingInfos;
 }
