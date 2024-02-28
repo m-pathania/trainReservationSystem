@@ -35,5 +35,5 @@ jobs:
         with:
           paths: |
             ${{ github.workspace }}/**/target/site/jacoco/**/jacoco.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PUBLISH_COMMENT }}
           min-coverage-overall: 20
