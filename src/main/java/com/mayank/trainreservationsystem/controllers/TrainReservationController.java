@@ -5,6 +5,7 @@ import com.mayank.trainreservationsystem.responses.TicketBookingResponse;
 import com.mayank.trainreservationsystem.services.TrainReservationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,11 +24,11 @@ public class TrainReservationController {
     private final TrainReservationService trainReservationService;
 
     @PostMapping("/book_ticket")
-    public TicketBookingResponse bookTicket(@RequestBody @Valid TicketBookingRequest request) {
+    public ResponseEntity<TicketBookingResponse> bookTicket(@RequestBody @Valid TicketBookingRequest request) {
         if (Objects.isNull(request.getBookingDate())) {
             request.setBookingDate(LocalDate.now());
         }
 
-        return trainReservationService.bookTicket(request);
+        return ResponseEntity.ok(trainReservationService.bookTicket(request));
     }
 }

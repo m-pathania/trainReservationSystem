@@ -65,6 +65,8 @@ public class TrainReservationServiceImpl implements TrainReservationService {
                         responseBuilder.status(seatBookingResult.getStatus());
                         bookingInfoRepository.updateBookingStatus(booking.getId(), BookingStatus.BOOKED);
                     });
+
+                    return responseBuilder.build();
                 } else {
                     updateResponseForNoSeats(responseBuilder);
                     bookingInfoRepository.updateBookingStatus(booking.getId(), BookingStatus.FAILED);

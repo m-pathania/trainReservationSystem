@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -22,7 +23,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = Entities.USER_INFO)
+@Table(name = Entities.USER_INFO,
+        indexes = {
+                @Index(name = "email_id_index", columnList = "email_id", unique = true)
+        })
 public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

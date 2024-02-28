@@ -23,7 +23,7 @@ public class SeatAllocationRepository {
 
     @Transactional
     public void persistAll(List<SeatAllocation> seatAllocationList) {
-        seatAllocationList.parallelStream().forEach(this::persist);
+        seatAllocationList.forEach(this::persist);
     }
 
     private void persist(SeatAllocation seatAllocation) {

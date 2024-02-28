@@ -26,7 +26,7 @@ public class BookingInfoRepository {
 
     @Transactional
     public int updateBookingStatus(long bookingId, BookingStatus status) {
-        TypedQuery<BookingInfo> query = entityManager.createQuery(UPDATE_BOOKING_STATUS, BookingInfo.class);
+        var query = entityManager.createQuery(UPDATE_BOOKING_STATUS);
         query.setParameter("status", status);
         query.setParameter("booking_id", bookingId);
 

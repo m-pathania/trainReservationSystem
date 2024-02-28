@@ -25,7 +25,7 @@ public class RouteSegmentRepository {
             AND frs.date = :date_to_book
             AND trs.station.id = :to_station
             AND frs.segmentOrder < trs.segmentOrder
-            AND rs.segmentOrder <= trs.segmentOrder
+            AND rs.segmentOrder < trs.segmentOrder
             AND rs.segmentOrder >= frs.segmentOrder
             """;
 

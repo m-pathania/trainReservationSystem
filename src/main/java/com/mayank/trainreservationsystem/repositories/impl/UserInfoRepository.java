@@ -3,6 +3,7 @@ package com.mayank.trainreservationsystem.repositories.impl;
 import com.mayank.trainreservationsystem.models.UserInfo;
 import com.mayank.trainreservationsystem.requests.BookingUserInfo;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,18 +25,17 @@ public class UserInfoRepository {
         TypedQuery<UserInfo> query = entityManager.createQuery(FIND_BY_EMAIL_QUERY, KLASS);
         query.setParameter("email_id", bookingUserInfo.getEmailId());
 
-        UserInfo userInfo = query.getSingleResult();
-        if (Objects.nonNull(userInfo)) {
-            return userInfo;
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            var userInfoCreated = UserInfo.builder().lastName(bookingUserInfo.getLastName())
+                    .firstName(bookingUserInfo.getFirstName())
+                    .emailId(bookingUserInfo.getEmailId())
+                    .build();
+
+            entityManager.persist(userInfoCreated);
+
+            return createOrFetchUser(bookingUserInfo);
         }
-
-        var userInfoCreated = UserInfo.builder().lastName(bookingUserInfo.getLastName())
-                .firstName(bookingUserInfo.getFirstName())
-                .emailId(bookingUserInfo.getEmailId())
-                .build();
-
-        entityManager.persist(userInfoCreated);
-
-        return createOrFetchUser(bookingUserInfo);
     }
 }
