@@ -8,7 +8,6 @@ public class Fields {
     public static final String NAME = "name";
     public static final String TRAIN_ID = "train_id";
     public static final String STATION_ID = "station_id";
-    public static final String ORDER = "order";
     public static final String ROUTE_ID = "route_id";
     public static final String SECTION_NAME = "section";
     public static final String DATE = "date";
@@ -21,4 +20,5 @@ public class Fields {
     public static final String EMAIL_ID = "email_id";
     public static final String FIRSTNAME = "firstname";
     public static final String LASTNAME = "lastname";
+    public static final String STATION_ORDER = "station_order";
 }

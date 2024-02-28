@@ -28,6 +28,6 @@ public class TrainRoute {
     @Column(name = Fields.STATION_ID)
     private Long stationId;
 
-    @Column(name = Fields.ORDER)
-    private Long order;
+    @Column(name = Fields.STATION_ORDER)
+    private Long stationOrder;
 }
