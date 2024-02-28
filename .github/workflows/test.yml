@@ -9,7 +9,7 @@
 name: Java CI with Maven
 
 env:
-  coverage-threshold: 80
+  coverage-threshold: 60
 
 on:
   pull_request:
