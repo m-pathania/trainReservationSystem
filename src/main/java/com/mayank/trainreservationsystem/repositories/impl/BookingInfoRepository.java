@@ -36,7 +36,7 @@ public class BookingInfoRepository {
         return query.executeUpdate();
     }
 
-    public List<BookingInfo> fetchBookingsForUserId(String userId) {
+    public List<BookingInfo> fetchBookingsForUserId(Long userId) {
         var query = entityManager.createQuery(FETCH_BOOKINGS_FOR_USER_ID, BookingInfo.class);
         query.setParameter("user_id", userId);
 

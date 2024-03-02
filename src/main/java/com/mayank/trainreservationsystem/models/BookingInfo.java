@@ -3,6 +3,7 @@ package com.mayank.trainreservationsystem.models;
 import com.mayank.trainreservationsystem.constants.Entities;
 import com.mayank.trainreservationsystem.constants.Fields;
 import com.mayank.trainreservationsystem.enums.BookingStatus;
+import com.mayank.trainreservationsystem.enums.TrainSection;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,6 +37,15 @@ public class BookingInfo {
     @Column(name = Fields.AMOUNT)
     private BigDecimal amount;
 
+    @Column(name = Fields.SEAT_NUMBER)
+    private Long seatNumber;
+
+    @Column(name = Fields.ROUTE_ID)
+    private Long routeId;
+
+    @Column(name = Fields.SECTION)
+    private TrainSection section;
+
     @Column(name = Fields.STATUS)
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
@@ -43,4 +53,16 @@ public class BookingInfo {
     @ManyToOne
     @JoinColumn(name = Fields.USER_ID)
     private UserInfo userInfo;
+
+    @ManyToOne
+    @JoinColumn(name = Fields.TRAIN_ID)
+    private Train train;
+
+    @ManyToOne
+    @JoinColumn(name = Fields.FROM_STATION_ID)
+    private TrainStation fromTrainStation;
+
+    @ManyToOne
+    @JoinColumn(name = Fields.TO_STATION_ID)
+    private TrainStation toTrainStation;
 }

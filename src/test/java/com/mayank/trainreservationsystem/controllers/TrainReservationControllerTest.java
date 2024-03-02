@@ -8,13 +8,16 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Map;
 import java.util.stream.IntStream;
 
+import com.mayank.trainreservationsystem.enums.BookingStatus;
 import com.mayank.trainreservationsystem.enums.Status;
 import com.mayank.trainreservationsystem.models.UserInfo;
 import com.mayank.trainreservationsystem.requests.BookingUserInfo;
 import com.mayank.trainreservationsystem.requests.TicketBookingRequest;
 import com.mayank.trainreservationsystem.responses.TicketBookingResponse;
+import com.mayank.trainreservationsystem.responses.UserBookingsResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,6 +26,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -35,9 +40,10 @@ class TrainReservationControllerTest {
     private long port;
 
     private final String bookTicketEndpoint = "/book_ticket";
+    private final String userBookingsEndpoint = "/user_bookings";
 
     @Test
-    void testPing() {
+    void testTicketBooking() {
         URI uri = getUri(bookTicketEndpoint);
         TicketBookingRequest ticketBookingRequest = TicketBookingRequest.builder().build();
         HttpEntity<TicketBookingRequest> httpEntity = new HttpEntity<>(ticketBookingRequest);
@@ -91,6 +97,44 @@ class TrainReservationControllerTest {
         Assertions.assertEquals(HttpStatus.OK, responseEntity2.getStatusCode());
         Assertions.assertNotNull(responseEntity2.getBody());
         Assertions.assertEquals(Status.COMPLETED, responseEntity2.getBody().getStatus());
+    }
+
+    @Test
+    void testUserBookings() {
+        String userEmail = "user1@gmail.com";
+        var userInfo = BookingUserInfo.builder().firstName("firstName")
+                .lastName("lastName").emailId(userEmail).build();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("x-trs-user-email", userEmail);
+        HttpEntity<?> httpEntity = new HttpEntity<>(httpHeaders);
+        URI uri = getUri(userBookingsEndpoint);
+
+        ResponseEntity<UserBookingsResponse> responseEntity = testRestTemplate.exchange(uri, HttpMethod.GET, httpEntity, UserBookingsResponse.class);
+        Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assertions.assertNotNull(responseEntity.getBody());
+        Assertions.assertEquals(userEmail, responseEntity.getBody().getUserEmail());
+        Assertions.assertEquals(0, responseEntity.getBody().getBookings().size());
+
+        URI bookTicketUri = getUri(bookTicketEndpoint);
+        TicketBookingRequest ticketBookingRequest = TicketBookingRequest.builder().build();
+        ticketBookingRequest.setFrom(2L);
+        ticketBookingRequest.setTo(8L);
+        ticketBookingRequest.setBookingDate(LocalDate.of(2024, Month.FEBRUARY, 1));
+        ticketBookingRequest.setPricePaid(BigDecimal.valueOf(20));
+        ticketBookingRequest.setUserInfo(userInfo);
+        HttpEntity<TicketBookingRequest> bookTicketHttpEntity = new HttpEntity<>(ticketBookingRequest);
+        ResponseEntity<TicketBookingResponse> response = testRestTemplate.postForEntity(bookTicketUri, bookTicketHttpEntity, TicketBookingResponse.class);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertNotNull(response.getBody());
+        Assertions.assertEquals(Status.COMPLETED, response.getBody().getStatus());
+
+        ResponseEntity<UserBookingsResponse> responseEntityPostBooking = testRestTemplate.exchange(uri, HttpMethod.GET, httpEntity, UserBookingsResponse.class);
+        Assertions.assertEquals(HttpStatus.OK, responseEntityPostBooking.getStatusCode());
+        Assertions.assertNotNull(responseEntityPostBooking.getBody());
+        Assertions.assertEquals(userEmail, responseEntityPostBooking.getBody().getUserEmail());
+        Assertions.assertEquals(1, responseEntityPostBooking.getBody().getBookings().size());
+        Assertions.assertEquals(new BigDecimal("20.00"), responseEntityPostBooking.getBody().getBookings().iterator().next().getAmountPaid());
     }
 
     private URI getUri(String endpoint) {

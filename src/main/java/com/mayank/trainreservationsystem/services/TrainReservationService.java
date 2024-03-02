@@ -7,5 +7,5 @@ import com.mayank.trainreservationsystem.responses.UserBookingsResponse;
 public interface TrainReservationService {
     TicketBookingResponse bookTicket(TicketBookingRequest request);
 
-    UserBookingsResponse getBookingsFroUser(String userEmail);
+    UserBookingsResponse getBookingsForUser(String userEmail);
 }

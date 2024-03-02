@@ -40,7 +40,7 @@ public class TrainReservationController {
 
     @GetMapping("/user_bookings")
     public ResponseEntity<UserBookingsResponse> getBookingsForUser(@RequestHeader("x-trs-user-email") String userEmail) {
-        return ResponseEntity.ok(trainReservationService.getBookingsFroUser(userEmail));
+        return ResponseEntity.ok(trainReservationService.getBookingsForUser(userEmail));
     }
 
     @GetMapping("/section_info")
