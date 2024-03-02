@@ -15,8 +15,10 @@ import com.mayank.trainreservationsystem.repositories.impl.SeatAllocationReposit
 import com.mayank.trainreservationsystem.repositories.impl.UserInfoRepository;
 import com.mayank.trainreservationsystem.requests.TicketBookingRequest;
 import com.mayank.trainreservationsystem.responses.TicketBookingResponse;
+import com.mayank.trainreservationsystem.responses.UserBookingsResponse;
 import com.mayank.trainreservationsystem.services.TrainReservationService;
 import com.mayank.trainreservationsystem.utils.CommonUtils;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -80,6 +83,43 @@ public class TrainReservationServiceImpl implements TrainReservationService {
         return responseBuilder.build();
     }
 
+    @Override
+    public UserBookingsResponse getBookingsFroUser(String userEmail) {
+        try {
+            UserInfo userInfo = userInfoRepository.fetchUserInfo(userEmail);
+            List<SeatAllocation> seatAllocations = seatAllocationRepository.findSeatAllocationsForUser(userInfo.getId());
+            var trainBookingResponses = mapToTrainBookingResponse(seatAllocations);
+
+            return UserBookingsResponse.builder()
+                    .userEmail(userInfo.getEmailId())
+                    .bookings(trainBookingResponses)
+                    .build();
+        } catch (NoResultException noResultException) {
+            return UserBookingsResponse.builder()
+                    .userEmail(userEmail)
+                    .bookings(new ArrayList<>())
+                    .build();
+        }
+    }
+
+    private List<UserBookingsResponse.TrainBookingResponse> mapToTrainBookingResponse(List<SeatAllocation> seatAllocations) {
+        return seatAllocations.stream()
+                .map(seatAllocation -> {
+                    final RouteSegment routeSegment = seatAllocation.getRouteSegment();
+                    final Train train = routeSegment.getTrain();
+                    final BookingInfo bookingInfo = seatAllocation.getBookingInfo();
+
+                    return UserBookingsResponse.TrainBookingResponse.builder()
+                            .trainId(train.getId())
+                            .trainName(train.getName())
+                            .trainSection(seatAllocation.getSection())
+                            .seatNumber(seatAllocation.getNumber())
+                            .bookingId(bookingInfo.getId())
+                            .amountPaid(bookingInfo.getAmount())
+                            .build();
+                }).toList();
+    }
+
     private BookingInfo initiateBooking(TicketBookingRequest request) {
         UserInfo userInfo = userInfoRepository.createOrFetchUser(request.getUserInfo());
         BookingInfo bookingInfo = BookingInfo.builder().amount(request.getPricePaid()).status(BookingStatus.INITIATED)
@@ -94,7 +134,7 @@ public class TrainReservationServiceImpl implements TrainReservationService {
     }
 
     private SeatBookingResult bookSeatForAllRouteSegments(TrainSeat availableSeat, List<RouteSegment> routeSegments,
-            BookingInfo booking) {
+                                                          BookingInfo booking) {
         try {
             var seatAllocations = routeSegments.stream()
                     .map(routeSegment -> SeatAllocation.builder().number(availableSeat.getNumber())

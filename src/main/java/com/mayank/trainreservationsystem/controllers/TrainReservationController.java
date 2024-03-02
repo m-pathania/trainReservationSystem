@@ -4,6 +4,7 @@ import com.mayank.trainreservationsystem.enums.TrainSection;
 import com.mayank.trainreservationsystem.requests.TicketBookingRequest;
 import com.mayank.trainreservationsystem.requests.UserSeatModificationRequest;
 import com.mayank.trainreservationsystem.responses.TicketBookingResponse;
+import com.mayank.trainreservationsystem.responses.UserBookingsResponse;
 import com.mayank.trainreservationsystem.services.TrainReservationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,8 @@ public class TrainReservationController {
     }
 
     @GetMapping("/user_bookings")
-    public ResponseEntity<?> getBookingsForUser(@RequestHeader("x-trs-user-email") String userEmail) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<UserBookingsResponse> getBookingsForUser(@RequestHeader("x-trs-user-email") String userEmail) {
+        return ResponseEntity.ok(trainReservationService.getBookingsFroUser(userEmail));
     }
 
     @GetMapping("/section_info")
