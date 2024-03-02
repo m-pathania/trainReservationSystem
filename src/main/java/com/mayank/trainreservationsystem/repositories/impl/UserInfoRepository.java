@@ -21,11 +21,8 @@ public class UserInfoRepository {
 
     @Transactional
     public UserInfo createOrFetchUser(BookingUserInfo bookingUserInfo) {
-        TypedQuery<UserInfo> query = entityManager.createQuery(FIND_BY_EMAIL_QUERY, KLASS);
-        query.setParameter("email_id", bookingUserInfo.getEmailId());
-
         try {
-            return query.getSingleResult();
+            return fetchUserInfo(bookingUserInfo.getEmailId());
         } catch (NoResultException e) {
             var userInfoCreated = UserInfo.builder().lastName(bookingUserInfo.getLastName())
                     .firstName(bookingUserInfo.getFirstName()).emailId(bookingUserInfo.getEmailId()).build();
@@ -34,5 +31,12 @@ public class UserInfoRepository {
 
             return createOrFetchUser(bookingUserInfo);
         }
+    }
+
+    public UserInfo fetchUserInfo(String userEmail) {
+        TypedQuery<UserInfo> query = entityManager.createQuery(FIND_BY_EMAIL_QUERY, KLASS);
+        query.setParameter("email_id", userEmail);
+
+        return query.getSingleResult();
     }
 }
